@@ -15,7 +15,7 @@ class SignalingClient {
   RTCVideoRenderer localRenderer;
 
   SignalingClient(String serverAddress, this.isHost, this.localRenderer){
-    socket = io('http://$serverAddress:3200', 
+    socket = io('http://127.0.0.1:3200', 
     OptionBuilder()
       .setTransports(['websocket']) // for Flutter or Dart VM
       .disableAutoConnect() 
@@ -141,7 +141,6 @@ class SignalingClient {
       });
       ///
     });
-    await openUserMedia(localRenderer);
     socket.connect();
     initialized=true;
   }
@@ -161,25 +160,6 @@ class SignalingClient {
   String? currentRoomText;
   StreamStateCallback? onAddRemoteStream;
 
-
-
-  Future<void> openUserMedia(
-    RTCVideoRenderer localVideo,
-  ) async {
-    var stream;
-    try{
-      stream = await navigator.mediaDevices
-        .getUserMedia({'video': false, 'audio': true,});
-    }
-    catch(e){
-      print(e);
-    }
-    localVideo.srcObject = stream;
-    localVideo.srcObject!.getAudioTracks()[0].enabled=false;
-    localStream = stream;
-
-    //remoteVideo.srcObject = await createLocalMediaStream('key');
-  }
 
   Future<void> hangUp(RTCVideoRenderer localVideo) async {
     List<MediaStreamTrack> tracks = localVideo.srcObject!.getTracks();
