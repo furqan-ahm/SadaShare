@@ -50,7 +50,13 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(onPressed: (){}, child: Text('Host')),
+            ElevatedButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder:(context) => Host(),));
+                print('eh');
+              },
+             child: Text('Host')
+            ),
             const SizedBox(height: 50,),
             const Text('OR'),
             const SizedBox(height: 50,),
