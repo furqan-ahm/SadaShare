@@ -65,6 +65,7 @@ class SignalingClient {
 
         localStream?.getTracks().forEach((track) {
           connections[data['from']]?.addTrack(track, localStream!);
+          print('have tracks');
         });
 
         connections[data['from']]!.onIceCandidate = (RTCIceCandidate? candidate) {
@@ -109,7 +110,9 @@ class SignalingClient {
 
             localStream?.getTracks().forEach((track) {
               connections[i]?.addTrack(track, localStream!);
+              print('have tracks');
             });
+
             connections[i]!.onIceCandidate = (RTCIceCandidate? candidate) {
               if (candidate == null) {
                 print('onIceCandidate: complete!');
@@ -152,7 +155,7 @@ class SignalingClient {
   Map<int, RTCPeerConnection> connections={};
   Map<int, MediaStream> remoteStreams={}; 
 
-  MediaStream? localStream;
+  MediaStream? get localStream=>localRenderer.srcObject;
   MediaStream? remoteStream;
   String? roomId;
   List clientCandidates=[];

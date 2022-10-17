@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sada_share/screens/host.dart';
+import 'package:sada_share/screens/host_screen.dart';
+import 'package:sada_share/screens/join_screen.dart';
 import 'package:sada_share/utils/server.dart';
 
 void main() {
@@ -35,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   host()async{
     await MyServer.getInstance().start();
-    Navigator.push(context, MaterialPageRoute(builder: (context)=>Host()));
+    Navigator.push(context, MaterialPageRoute(builder: (context)=>HostScreen()));
   }
 
   join()async{
@@ -52,8 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             ElevatedButton(
               onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder:(context) => Host(),));
-                print('eh');
+                host();
               },
              child: Text('Host')
             ),
@@ -68,7 +68,9 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             const SizedBox(height: 20,),
-            ElevatedButton(onPressed: (){}, child: Text('Join')),
+            ElevatedButton(onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => JoinScreen(serverAddress: 'localhost',),));
+            }, child: Text('Join')),
           ],
         ),
       ),

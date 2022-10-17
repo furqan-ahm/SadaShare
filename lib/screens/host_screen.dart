@@ -3,14 +3,14 @@ import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:sada_share/utils/client.dart';
 import 'package:sada_share/widgets/screen_select_dialog.dart';
 
-class Host extends StatefulWidget {
-  const Host({ Key? key }) : super(key: key);
+class HostScreen extends StatefulWidget {
+  const HostScreen({ Key? key }) : super(key: key);
 
   @override
   _HostState createState() => _HostState();
 }
 
-class _HostState extends State<Host> {
+class _HostState extends State<HostScreen> {
   
   SignalingClient? client;
   RTCVideoRenderer localRenderer=RTCVideoRenderer();
@@ -53,9 +53,16 @@ class _HostState extends State<Host> {
     }
   }
 
+
+  startStream(){
+    client=SignalingClient('localhost', true, localRenderer);
+    client?.initialize();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: Center(
         child: RTCVideoView(
           localRenderer
@@ -65,12 +72,14 @@ class _HostState extends State<Host> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           FloatingActionButton(
+            heroTag: 'totally not depressed',
             onPressed: (){
-              getDesktopSource();
+              startStream();
             },
-            child: const Icon(Icons.screen_share),
+            child: const Icon(Icons.broadcast_on_home),
           ),
           FloatingActionButton(
+            heroTag: 'ahahaha',
             onPressed: (){
               getDesktopSource();
             },
