@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:sada_share/utils/client.dart';
@@ -81,12 +82,26 @@ class _HostState extends State<HostScreen> {
           FloatingActionButton(
             heroTag: 'ahahaha',
             onPressed: (){
-              getDesktopSource();
+              if(!kIsWeb)getDesktopSource();
+              else getSourceWeb();
             },
             child: const Icon(Icons.screen_share),
           ),
         ],
       ),
     );
+  }
+  
+  void getSourceWeb() async{
+    var stream = await navigator.mediaDevices.getDisplayMedia({});
+    stream.getVideoTracks()[0].onEnded = () {
+        print(
+            'By adding a listener on onEnded you can: 1) catch stop video sharing on Web');
+      };
+
+      localRenderer.srcObject = stream;
+      setState(() {
+        sourceSelected=true;
+      });
   }
 }

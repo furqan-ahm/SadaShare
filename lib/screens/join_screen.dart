@@ -15,6 +15,7 @@ class _ClientState extends State<JoinScreen> {
 
   late SignalingClient client;
   RTCVideoRenderer remoteRenderer=RTCVideoRenderer();
+  RTCVideoRenderer localRenderer=RTCVideoRenderer();
   bool ready=false;
 
   @override
@@ -25,8 +26,9 @@ class _ClientState extends State<JoinScreen> {
 
 
   initRenderer()async{
+    await localRenderer.initialize();
     await remoteRenderer.initialize();
-    client=SignalingClient(widget.serverAddress, false, remoteRenderer);
+    client=SignalingClient(widget.serverAddress, false, localRenderer);
     client.onAddRemoteStream=(stream) {
       print('got stream');
       remoteRenderer.srcObject=stream;
@@ -43,6 +45,9 @@ class _ClientState extends State<JoinScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Joined'),
+      ),
       body: Center(
         child: ready?RTCVideoView(
           remoteRenderer, objectFit: RTCVideoViewObjectFit.RTCVideoViewObjectFitContain, 
