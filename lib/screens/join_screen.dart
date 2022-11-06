@@ -33,7 +33,6 @@ class _ClientState extends State<JoinScreen> {
       print('got stream');
       remoteRenderer.srcObject=stream;
       setState(() {
-        
       });
     };
     client.initialize();
@@ -46,7 +45,9 @@ class _ClientState extends State<JoinScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         title: Text('Joined'),
+        elevation: 0,
       ),
       body: Center(
         child: ready?RTCVideoView(

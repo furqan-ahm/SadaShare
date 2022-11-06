@@ -14,23 +14,33 @@ class MyServer{
 
 
       
-      client.emit('index', clients.length);      
+      if(clients.length!=0){
+        client.to(clients[0].id).emit('student-join', clients.length);
+      }
+
+
       clients.add(client);
       client.join('dummy');
-
+      
       client.on('disconnect',(_){
         clients.removeWhere((e)=>e.id==client.id);
       });
 
       client.on('send-offer',(data){
+
+        data['from']=clients.indexOf(client);
         client.to(clients[data['to']].id).emit('offer-recieved',data);
       });
 
       client.on('send-answer',(data){
+
+        data['from']=clients.indexOf(client);
         client.to(clients[data['to']].id).emit('answer-recieved',data);
       });
 
       client.on('add-candidate',(data){
+
+        data['from']=clients.indexOf(client);
         client.to(clients[data['to']].id).emit('candidate-recieved',data);
       });
 

@@ -29,12 +29,14 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  bitsdojo_window: ^0.1.5
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
   flutter_webrtc: ^0.9.9+hotfix.1
+  network_info_plus: ^3.0.1
   socket_io: ^1.0.1
-  socket_io_client: '1.0.2'
+  socket_io_client: 1.0.2
 
 dev_dependencies:
   flutter_lints: ^2.0.0
