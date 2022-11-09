@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +27,7 @@ class _HostState extends State<HostScreen> {
   bool started = false;
 
   String ipAddress = '';
+  List<NetworkInterface> allIPs=[];
 
   bool sourceSelected = false;
 
@@ -71,6 +74,10 @@ class _HostState extends State<HostScreen> {
     setState(() {
       started = true;
     });
+
+    allIPs = await NetworkInterface.list(type: InternetAddressType.IPv4);
+
+    ipAddress='';
 
     ipAddress = (await info.getWifiIP()) ?? 'Error';
     setState(() {});
@@ -129,6 +136,56 @@ class _HostState extends State<HostScreen> {
             child: Row(
               children: [
                 Text('IP: $ipAddress'),
+                (allIPs.isEmpty)?const SizedBox.shrink():IconButton(
+                  onPressed: (){
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return Dialog(
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Text('All IPs'),
+                                Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: allIPs.map<Widget>((e){
+                                    return Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          e.name
+                                        ),
+                                        Text(
+                                          e.addresses.first.address
+                                        )
+                                      ],
+                                    );
+                                  }).toList(),
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                FloatingActionButton.extended(
+                                    backgroundColor: Colors.white,
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    label: Row(
+                                      children: const [
+                                        Icon(Icons.check),
+                                        Text('OK'),
+                                      ],
+                                    ))
+                              ],
+                            ),
+                          ),
+                        );
+                      });
+                  }, 
+                  icon: const Icon(Icons.more),
+                )
               ],
             ),
           )
